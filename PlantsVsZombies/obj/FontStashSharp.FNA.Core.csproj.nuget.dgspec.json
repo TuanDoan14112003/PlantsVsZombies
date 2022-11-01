@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/FontStashSharp.FNA.Core.csproj": {}
+  },
+  "projects": {
+    "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/FontStashSharp.FNA.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/FontStashSharp.FNA.Core.csproj",
+        "projectName": "FontStashSharp.FNA",
+        "projectPath": "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/FontStashSharp.FNA.Core.csproj",
+        "packagesPath": "/Users/tuandoan/.nuget/packages/",
+        "outputPath": "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tuandoan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Cyotek.Drawing.BitmapFont": {
+              "target": "Package",
+              "version": "(, )"
+            },
+            "FontStashSharp.Base": {
+              "target": "Package",
+              "version": "(, )"
+            },
+            "FontStashSharp.Rasterizers.StbTrueTypeSharp": {
+              "target": "Package",
+              "version": "(, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "StbImageSharp": {
+              "target": "Package",
+              "version": "(, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

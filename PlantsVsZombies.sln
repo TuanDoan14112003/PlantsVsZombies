@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1703.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantsVsZombies", "PlantsVsZombies\PlantsVsZombies.csproj", "{AC6C3FA9-DA92-4283-9181-1DA60E1CC245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontStashSharp.MonoGame", "src\XNA\FontStashSharp.MonoGame.csproj", "{CFC7EB79-36C6-48E7-8F4A-113A53FF7057}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "FontStashSharp", "FontStashSharp\FontStashSharp.csproj", "{6FD619AA-00C7-44CF-A701-228FD9011550}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "FontStashSharp.FNA.Core", "XNA\FontStashSharp.FNA.Core.csproj", "{994B9ADB-4E40-4956-B592-78330E456596}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "FontStashSharp.FNA", "XNA\FontStashSharp.FNA.csproj", "{7EE3644E-CBE2-4DB4-9583-020DA12BA477}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteFontPlus.MonoGame", "SpriteFontPlus\src\SpriteFontPlus.MonoGame.csproj", "{1401FB2B-FAB6-443A-895B-3611E2AEC3C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC6C3FA9-DA92-4283-9181-1DA60E1CC245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC6C3FA9-DA92-4283-9181-1DA60E1CC245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC6C3FA9-DA92-4283-9181-1DA60E1CC245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC6C3FA9-DA92-4283-9181-1DA60E1CC245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFC7EB79-36C6-48E7-8F4A-113A53FF7057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC7EB79-36C6-48E7-8F4A-113A53FF7057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC7EB79-36C6-48E7-8F4A-113A53FF7057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC7EB79-36C6-48E7-8F4A-113A53FF7057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FD619AA-00C7-44CF-A701-228FD9011550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FD619AA-00C7-44CF-A701-228FD9011550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FD619AA-00C7-44CF-A701-228FD9011550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FD619AA-00C7-44CF-A701-228FD9011550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{994B9ADB-4E40-4956-B592-78330E456596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994B9ADB-4E40-4956-B592-78330E456596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994B9ADB-4E40-4956-B592-78330E456596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{994B9ADB-4E40-4956-B592-78330E456596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE3644E-CBE2-4DB4-9583-020DA12BA477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE3644E-CBE2-4DB4-9583-020DA12BA477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE3644E-CBE2-4DB4-9583-020DA12BA477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE3644E-CBE2-4DB4-9583-020DA12BA477}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1401FB2B-FAB6-443A-895B-3611E2AEC3C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1401FB2B-FAB6-443A-895B-3611E2AEC3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1401FB2B-FAB6-443A-895B-3611E2AEC3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1401FB2B-FAB6-443A-895B-3611E2AEC3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6257B62F-188E-470B-963C-22188510A612}
+	EndGlobalSection
+EndGlobal

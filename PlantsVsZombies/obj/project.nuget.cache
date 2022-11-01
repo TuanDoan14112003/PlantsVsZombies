@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Yw9vvNtYRlV1VmYoJt63S4/4KcuNZGvYygFUJhf57aWxi6IqUzP4R7Pr4VHB0I//oE46n8LduANwOeNEyDNqzA==",
+  "success": true,
+  "projectFilePath": "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/PlantsVsZombies.csproj",
+  "expectedPackageFiles": [
+    "/Users/tuandoan/.nuget/packages/cyotek.drawing.bitmapfont/2.0.1/cyotek.drawing.bitmapfont.2.0.1.nupkg.sha512",
+    "/Users/tuandoan/.nuget/packages/monogame.content.builder.task/3.8.1.263/monogame.content.builder.task.3.8.1.263.nupkg.sha512",
+    "/Users/tuandoan/.nuget/packages/monogame.framework.desktopgl/3.8.1.263/monogame.framework.desktopgl.3.8.1.263.nupkg.sha512",
+    "/Users/tuandoan/.nuget/packages/stbimagesharp/2.22.4/stbimagesharp.2.22.4.nupkg.sha512",
+    "/Users/tuandoan/.nuget/packages/stbtruetypesharp/1.24.7/stbtruetypesharp.1.24.7.nupkg.sha512",
+    "/Users/tuandoan/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
