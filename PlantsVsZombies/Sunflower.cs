@@ -5,8 +5,9 @@ namespace PlantsVsZombies
     {
         private GameTime _lastGameTime;
         private List<Sun> _suns;
-        public Sunflower(Texture2D texture, int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector, int cost, int coolDownTime) : base(new String("Sunflower"), new String("Sunflower"), texture, width, height, projectileTexture, totalFrames, positionVector, cost, coolDownTime)
+        public Sunflower(Texture2D texture, int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector) : base(new String("Sunflower"), new String("Sunflower"), texture, width, height, projectileTexture, totalFrames, positionVector)
         {
+            Cost = 50;
             _lastGameTime = new GameTime();
             _suns = new List<Sun>();
         }

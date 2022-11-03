@@ -17,11 +17,15 @@ public class PvZ : Game
     private string _currentPlant;
     private Lawn _lawn;
 
-    private Texture2D _plantTexture;
-    private int _plantTextureWidth;
-    private int _plantTextureHeight;
+    //might be able to delete all this and use local variables
+    private Texture2D _wallnutTexture;
+    private Texture2D _wallnutIconTexture;
+    private Texture2D _peashooterTexture;
+    
     private Texture2D _peaTexture;
+    private Texture2D _peaIconTexture;
     private Texture2D _sunflowerTexture;
+    private Texture2D _sunflowerIconTexture;
     private Texture2D _sunTexture;
     private Texture2D _zombieTexture;
     private Texture2D _zombieEatingTexture;
@@ -29,6 +33,8 @@ public class PvZ : Game
     private List<Plant> _plants;
     private PlantFactory _plantFactory;
     private ZombieFactory _zombieFactory;
+    Texture2D _sunCounterTexture;
+    private Deck _deck;
     private int _score;
     private SpriteFont font;
 
@@ -96,10 +102,10 @@ public class PvZ : Game
         _lawn = Lawn.GetInstance(lawnTexture);
 
 
-        FileStream plantFileStream = new FileStream(_contentPath + "plant.png", FileMode.Open);
-        _plantTexture = Texture2D.FromStream(GraphicsDevice, plantFileStream);
-        _plantTextureWidth = 100;
-        _plantTextureHeight = 100;
+        FileStream peashooterFileStream = new FileStream(_contentPath + "plant.png", FileMode.Open);
+        _peashooterTexture = Texture2D.FromStream(GraphicsDevice, peashooterFileStream);
+        //_plantTextureWidth = 100;
+        //_plantTextureHeight = 100;
 
         FileStream sunflowerFileStream = new FileStream(_contentPath + "sunflower.png", FileMode.Open);
         _sunflowerTexture = Texture2D.FromStream(GraphicsDevice, sunflowerFileStream);
@@ -107,6 +113,8 @@ public class PvZ : Game
 
         FileStream peaFileStream = new FileStream(_contentPath + "pea.png", FileMode.Open);
         _peaTexture = Texture2D.FromStream(GraphicsDevice, peaFileStream);
+        FileStream peashooterIconFileStream = new FileStream(_contentPath + "peashooter_icon.png", FileMode.Open);
+        _peaIconTexture = Texture2D.FromStream(GraphicsDevice, peashooterIconFileStream);
 
         FileStream zombieFileStream = new FileStream(_contentPath + "zombie.png", FileMode.Open);
         _zombieTexture = Texture2D.FromStream(GraphicsDevice, zombieFileStream);
@@ -117,9 +125,39 @@ public class PvZ : Game
         FileStream sunFileStream = new FileStream(_contentPath + "sun.png", FileMode.Open);
         _sunTexture = Texture2D.FromStream(GraphicsDevice, sunFileStream);
 
-        //Zombie newZombie = new Zombie(_zombieTexture,_zombieEatingTexture,250,141,24, new Vector2(1000,315),(float)0.5);
-        //_zombies.Add(newZombie);
+        FileStream wallnutFileStream = new FileStream(_contentPath + "wallnut.png", FileMode.Open);
+        _wallnutTexture = Texture2D.FromStream(GraphicsDevice, wallnutFileStream);
+
+        FileStream wallnutIconFileStream = new FileStream(_contentPath + "wallnut_icon.png", FileMode.Open);
+        _wallnutIconTexture = Texture2D.FromStream(GraphicsDevice, wallnutIconFileStream);
+
+
+        FileStream sunflowerIconFileStream = new FileStream(_contentPath + "sunflower_icon.png", FileMode.Open);
+        _sunflowerIconTexture = Texture2D.FromStream(GraphicsDevice, sunflowerIconFileStream);
+
+        FileStream sunCounterFileStream = new FileStream(_contentPath + "suncounter.png", FileMode.Open);
+        _sunCounterTexture = Texture2D.FromStream(GraphicsDevice, sunCounterFileStream);
+
         _zombieFactory = new ZombieFactory(10, 20, 355, 200, _zombieTexture, _zombieEatingTexture, 24, (float)0.2);
+
+ 
+        _plantFactory.PeashooterTexture = _peashooterTexture;
+        _plantFactory.PeashooterTextureTotalFrames = 49; 
+        _plantFactory.PeashooterProjectileTexture = _peaTexture;
+        _plantFactory.SunflowerTexture = _sunflowerTexture;
+        _plantFactory.SunTexture = _sunTexture;
+        _plantFactory.SunflowerTextureTotalFrames = 48; //fixxx this
+        _plantFactory.WallnutTexture = _wallnutTexture;
+        _plantFactory.WallnutTotalFrames = 17;
+        _plantFactory.PlantWidth = 100;
+        _plantFactory.PlantHeight = 100;
+
+        Dictionary<string,Texture2D> plantList =  new Dictionary<string, Texture2D>();
+        plantList.Add( "peashooter", _peaIconTexture);
+        plantList.Add("sunflower", _sunflowerIconTexture);
+        plantList.Add("wallnut", _wallnutIconTexture);
+        _deck = new Deck(plantList);
+    
 
     }
 
@@ -160,13 +198,14 @@ public class PvZ : Game
         
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-        if (Keyboard.GetState().IsKeyDown(Keys.O)) _currentPlant = "sunflower";
-        if (Keyboard.GetState().IsKeyDown(Keys.P)) _currentPlant = "peashooter";
+ 
         if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
         {
             int MouseX = Mouse.GetState().X;
             int MouseY = Mouse.GetState().Y;
-            Console.WriteLine(MouseY);
+
+            String newPlant = _deck.getSelectedPlant(MouseX, MouseY);
+            if (newPlant != null) _currentPlant = newPlant;
             bool clickOnSun = false;
 
             foreach (Plant plant in _plants)
@@ -180,7 +219,7 @@ public class PvZ : Game
                         {
                             sun.IsRemoved = true;
                             clickOnSun = true;
-                            _score++;
+                            _score+=25;
                             break;
                         }
                     }
@@ -192,19 +231,20 @@ public class PvZ : Game
 
                 if (location.Item1 != -1 && location.Item2 != -1)
                 {
-                    if (_currentPlant == "peashooter")
-                    {
 
-                        Plant plant = _plantFactory.CreatePlant(new string("peashooter"), _plantTexture, _plantTextureWidth, _plantTextureHeight, _peaTexture, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
-                        Lawn.GetInstance().GetRow(location.Item1).GetTile(location.Item2).Plant = plant; // lam the nao de biet duoc player muon tao plant nao
-                        _plants.Add(plant);
-                    }
-                    else if (_currentPlant == "sunflower")
+
+                    Plant plant = _plantFactory.CreatePlant(_currentPlant, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
+                    Console.WriteLine(plant.Cost);
+                    if (_score >= plant.Cost)
                     {
-                        Plant plant = _plantFactory.CreatePlant(new string("sunflower"), _sunflowerTexture, _plantTextureWidth, _plantTextureHeight, _sunTexture, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
-                        Lawn.GetInstance().GetRow(location.Item1).GetTile(location.Item2).Plant = plant; // lam the nao de biet duoc player muon tao plant nao
+                        Lawn.GetInstance().GetRow(location.Item1).GetTile(location.Item2).Plant = plant;
                         _plants.Add(plant);
+                        _score -= plant.Cost;
+                    } else
+                    {
+                        Console.WriteLine("you dont have enough sun");
                     }
+                    
 
                 }
             }
@@ -310,9 +350,13 @@ public class PvZ : Game
                 if (tile.Plant != null) tile.Plant.Draw(_spriteBatch);
             }
         }
-        _spriteBatch.DrawString(font, _score.ToString(), new Vector2(100, 100), Color.Black);
+        
+        _deck.Draw(_spriteBatch);
+        _spriteBatch.Draw(_sunCounterTexture, new Rectangle(150,170,200,57), Color.White);
+        _spriteBatch.DrawString(font, _score.ToString(), new Vector2(260, 185), Color.Black);
         base.Draw(gameTime);
         _spriteBatch.End();
+        
     }
 }
 

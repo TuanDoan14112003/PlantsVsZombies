@@ -10,7 +10,7 @@ namespace PlantsVsZombies
         private int _projectileDamage;
         private GameTime _lastGameTime;
         private int _projectileSize;
-        public Shooter(String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture,int projectileSize,int projectileDamage, int totalFrames, Vector2 positionVector, int cost, int coolDownTime) : base(name, description, texture,width,height, projectileTexture, totalFrames, positionVector,cost,coolDownTime)
+        public Shooter(String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture,int projectileSize,int projectileDamage, int totalFrames, Vector2 positionVector) : base(name, description, texture,width,height, projectileTexture, totalFrames, positionVector)
         {
             _projectiles = new List<Projectile>();
             _projectileSize = projectileSize;

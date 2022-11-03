@@ -9,7 +9,7 @@ namespace PlantsVsZombies
         public int Damage { get => _damage; }
 
 
-        public Projectile(String name, String description, Texture2D texture,int width,int height, Vector2 positionVector, int damage) : base(name, description, texture,width,height, 1, positionVector)
+        public Projectile(String name, String description, Texture2D texture,int width,int height, Vector2 positionVector, int damage) : base(name, description, texture,width,height, 1, positionVector, 100)
         {
             
             _damage = damage;

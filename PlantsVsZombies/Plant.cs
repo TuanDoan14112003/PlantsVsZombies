@@ -3,13 +3,11 @@ namespace PlantsVsZombies
 {
     public class Plant : GameObject
     {
-        private int _cost;
-        private int _coolDownTime;
+        static private int _cost;
         protected Texture2D _projectileTextuture;
        
 
         public int Cost { get => _cost; set => _cost = value; }
-        public int CoolDownTime { get => _coolDownTime; set => _coolDownTime = value; }
 
 
 
@@ -17,10 +15,8 @@ namespace PlantsVsZombies
         protected List<Projectile> _projectiles;
 
 
-        public Plant(String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector,int cost, int coolDownTime) : base(name,description,texture,width,height,totalFrames,positionVector)
+        public Plant(String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector,int hp = 100) : base(name,description,texture,width,height,totalFrames,positionVector, hp)
         {
-            Cost = cost;
-            CoolDownTime = coolDownTime;
             _projectileTextuture = projectileTexture;
 
         }

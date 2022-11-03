@@ -19,7 +19,7 @@ namespace PlantsVsZombies
         public float Damage { get => _damage; }
         public Tuple<int,int> EatingLocation { get => _eatingLocation; set => _eatingLocation = value; }
         public ZombieState State { get => _state; set => _state = value; }
-        public Zombie( Texture2D texture,Texture2D zombieEatingTexture,int width,int height, int totalFrames, Vector2 positionVector, float damage) : base(new string("zombie"), new string("zombie"), texture,width,height, totalFrames, positionVector)
+        public Zombie( Texture2D texture,Texture2D zombieEatingTexture,int width,int height, int totalFrames, Vector2 positionVector, float damage, int hp = 100) : base(new string("zombie"), new string("zombie"), texture,width,height, totalFrames, positionVector, hp)
         {
             _damage = damage;
             _state = new ZombieMovingState(texture);

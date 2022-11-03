@@ -35,12 +35,12 @@ namespace PlantsVsZombies
         public Vector2 PositionVector { get => _positionVector; set => _positionVector = value; }
 
 
-        public GameObject(String name, String description, Texture2D texture,int width, int height, int totalFrames, Vector2 positionVector)
+        public GameObject(String name, String description, Texture2D texture,int width, int height, int totalFrames, Vector2 positionVector, int hp)
         {
             IsRemoved = false;
             _name = name;
             _description = description;
-            Hp = 100;
+            Hp = hp;
             Texture = texture;
             _positionVector = positionVector;
             _currentFrame = 0;
