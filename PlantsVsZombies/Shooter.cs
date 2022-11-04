@@ -8,19 +8,20 @@ namespace PlantsVsZombies
     {
 
         private int _projectileDamage;
-        private GameTime _lastGameTime;
+
         private int _projectileSize;
-        public Shooter(String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture,int projectileSize,int projectileDamage, int totalFrames, Vector2 positionVector) : base(name, description, texture,width,height, projectileTexture, totalFrames, positionVector)
+        public Shooter(GameTime gametime, String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture,int projectileSize,int projectileDamage, int totalFrames, Vector2 positionVector) : base(gametime,name, description, texture,width,height, projectileTexture, totalFrames, positionVector)
         {
             _projectiles = new List<Projectile>();
             _projectileSize = projectileSize;
-            _lastGameTime = new GameTime();
+
             _projectileDamage = projectileDamage;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             if (gameTime.TotalGameTime.TotalSeconds - _lastGameTime.TotalGameTime.TotalSeconds >= 2)
             {
 

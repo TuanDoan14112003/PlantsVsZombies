@@ -33,10 +33,16 @@ public class PvZ : Game
     private List<Plant> _plants;
     private PlantFactory _plantFactory;
     private ZombieFactory _zombieFactory;
+    private int _stage;
     Texture2D _sunCounterTexture;
     private Deck _deck;
-    private int _score;
+    private int _sun;
+    private List<Sun> _sunList;
     private SpriteFont font;
+    private String _message;
+    private bool _gameOver;
+    private SoundEffect _eatingSound;
+    private SoundEffectInstance _ingameSong;
 
     private static PvZ _PvZInstance;
 
@@ -71,9 +77,13 @@ public class PvZ : Game
         _plantFactory = new PlantFactory();
         
         _zombies = new List<Zombie>();
-        _currentPlant = "peashooter";
+        _currentPlant = null;
         _plants = new List<Plant>();
-        _score = 0;
+        _sun = 0;
+        _sunList = new List<Sun>();
+        _message = null;
+        _stage = 0;
+        _gameOver = false;
         base.Initialize();
 
     }
@@ -138,19 +148,28 @@ public class PvZ : Game
         FileStream sunCounterFileStream = new FileStream(_contentPath + "suncounter.png", FileMode.Open);
         _sunCounterTexture = Texture2D.FromStream(GraphicsDevice, sunCounterFileStream);
 
-        _zombieFactory = new ZombieFactory(10, 20, 355, 200, _zombieTexture, _zombieEatingTexture, 24, (float)0.2);
+        FileStream _eatingSoundFileStream = new FileStream(_contentPath + "/sounds/chomp.wav", FileMode.Open);
+        _eatingSound = SoundEffect.FromStream(_eatingSoundFileStream);
+        Zombie.EatingSoundEffect = _eatingSound;
+
+        FileStream _ingameSongFileStream = new FileStream(_contentPath + "/sounds/ingame.wav", FileMode.Open);
+        SoundEffect song = SoundEffect.FromStream(_ingameSongFileStream);
+        _ingameSong = song.CreateInstance();
+
+
+        _zombieFactory = new ZombieFactory(4, 15, 355, 200, _zombieTexture, _zombieEatingTexture, 24, (float)0.6);
 
  
-        _plantFactory.PeashooterTexture = _peashooterTexture;
-        _plantFactory.PeashooterTextureTotalFrames = 49; 
-        _plantFactory.PeashooterProjectileTexture = _peaTexture;
-        _plantFactory.SunflowerTexture = _sunflowerTexture;
-        _plantFactory.SunTexture = _sunTexture;
-        _plantFactory.SunflowerTextureTotalFrames = 48; //fixxx this
-        _plantFactory.WallnutTexture = _wallnutTexture;
-        _plantFactory.WallnutTotalFrames = 17;
-        _plantFactory.PlantWidth = 100;
-        _plantFactory.PlantHeight = 100;
+        PlantFactory.PeashooterTexture = _peashooterTexture;
+        PlantFactory.PeashooterTextureTotalFrames = 49;
+        PlantFactory.PeashooterProjectileTexture = _peaTexture;
+        PlantFactory.SunflowerTexture = _sunflowerTexture;
+        PlantFactory.SunTexture = _sunTexture;
+        PlantFactory.SunflowerTextureTotalFrames = 48; //fixxx this
+        PlantFactory.WallnutTexture = _wallnutTexture;
+        PlantFactory.WallnutTotalFrames = 17;
+        PlantFactory.PlantWidth = 100;
+        PlantFactory.PlantHeight = 100;
 
         Dictionary<string,Texture2D> plantList =  new Dictionary<string, Texture2D>();
         plantList.Add( "peashooter", _peaIconTexture);
@@ -188,12 +207,31 @@ public class PvZ : Game
     {
 
         // Get the mouse state relevant for this frame
+        if (_ingameSong.State != SoundState.Playing)
+        {
+            _ingameSong.Play();
+        }
         MouseState currentMouseState = Mouse.GetState();
-   
         if (_zombies.Count == 0)
         {
-            Console.WriteLine("vao day");
-            _zombies = _zombieFactory.GenerateZombies(2);
+            if (gameTime.TotalGameTime.TotalSeconds >= 35) _stage = 1;
+            if (gameTime.TotalGameTime.TotalSeconds >= 90) _stage = 2;
+            _zombies = ZombieFactory.GenerateZombies(_stage);
+        }
+ 
+
+        if (_sunList.Count == 0)
+        {
+            Random rnd = new Random();
+            if (rnd.Next(1,100) == 1)
+            {
+                int x = rnd.Next(200,700);
+                int y = rnd.Next(300, 700);
+                
+
+                Sun newSun = new Sun(_sunTexture, 50, 50, new Vector2(x,y));
+                _sunList.Add(newSun);
+            }
         }
         
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -203,26 +241,23 @@ public class PvZ : Game
         {
             int MouseX = Mouse.GetState().X;
             int MouseY = Mouse.GetState().Y;
+            Console.WriteLine(MouseX);
+            Console.WriteLine(MouseY);
 
             String newPlant = _deck.getSelectedPlant(MouseX, MouseY);
             if (newPlant != null) _currentPlant = newPlant;
             bool clickOnSun = false;
 
-            foreach (Plant plant in _plants)
+
+            for (int sunIndex = _sunList.Count - 1; sunIndex >= 0; sunIndex--)
             {
-                if (plant is Sunflower)
+                Sun sun = _sunList[sunIndex];
+                if (sun.Rectangle.Left < MouseX && sun.Rectangle.Right > MouseX && sun.Rectangle.Top < MouseY && sun.Rectangle.Bottom > MouseY)
                 {
-                    Sunflower sunflower = (Sunflower)plant;
-                    foreach (Sun sun in sunflower.Suns)
-                    {
-                        if (sun.Rectangle.Left < MouseX && sun.Rectangle.Right > MouseX && sun.Rectangle.Top < MouseY && sun.Rectangle.Bottom > MouseY)
-                        {
-                            sun.IsRemoved = true;
-                            clickOnSun = true;
-                            _score+=25;
-                            break;
-                        }
-                    }
+                    _sunList.RemoveAt(sunIndex);
+                    clickOnSun = true;
+                    _sun += 25;
+                    break;
                 }
             }
             if (!clickOnSun)
@@ -232,19 +267,26 @@ public class PvZ : Game
                 if (location.Item1 != -1 && location.Item2 != -1)
                 {
 
-
-                    Plant plant = _plantFactory.CreatePlant(_currentPlant, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
-                    Console.WriteLine(plant.Cost);
-                    if (_score >= plant.Cost)
+                    if (Lawn.GetInstance().Rows[location.Item1].Tiles[location.Item2].Plant == null)
                     {
-                        Lawn.GetInstance().GetRow(location.Item1).GetTile(location.Item2).Plant = plant;
-                        _plants.Add(plant);
-                        _score -= plant.Cost;
-                    } else
-                    {
-                        Console.WriteLine("you dont have enough sun");
+                        Plant plant = PlantFactory.CreatePlant(gameTime, _currentPlant, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
+                        if (plant != null)
+                        {
+                            if (_sun >= plant.Cost)
+                            {
+                                Lawn.GetInstance().GetRow(location.Item1).GetTile(location.Item2).Plant = plant;
+                                _plants.Add(plant);
+                                _sun -= plant.Cost;
+                                _message = null;
+                            }
+                            else
+                            {
+                                _message = "You don't have enough suns";
+                            }
+                        }
+                
                     }
-                    
+  
 
                 }
             }
@@ -291,6 +333,12 @@ public class PvZ : Game
  
 
                     }
+                    if (plant is Sunflower)
+                    {
+                        Sunflower sunflower = (Sunflower)plant;
+                        Sun newSun = sunflower.GenerateSun(gameTime);
+                        if (newSun != null) _sunList.Add(newSun);
+                    }
                 }
 
             }
@@ -314,7 +362,10 @@ public class PvZ : Game
                 }
             }
             _zombies[index].Update(gameTime);
-           
+            if (_zombies[index].Rectangle.Center.X <= 0)
+            {
+                _gameOver = true;
+            }
             if (_zombies[index].IsRemoved)
             {
                 
@@ -331,32 +382,49 @@ public class PvZ : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Black);
 
         // TODO: Add your drawing code here
-
         _spriteBatch.Begin();
-        
-        Lawn.GetInstance().Draw(_spriteBatch, new Vector2(0, 150));
-        for (int i = 0; i < _zombies.Count; i++)
+        if (!_gameOver)
         {
-            _zombies[i].Draw(_spriteBatch);
-        }
-        for (int i = 0; i < Lawn.GetInstance().Rows.Count; i++)
-        {
-            for (int j = 0; j < Lawn.GetInstance().Rows[i].Tiles.Count; j ++)
+            Lawn.GetInstance().Draw(_spriteBatch, new Vector2(0, 150));
+            for (int i = 0; i < _zombies.Count; i++)
             {
-                Tile tile = Lawn.GetInstance().Rows[i].Tiles[j];
-                if (tile.Plant != null) tile.Plant.Draw(_spriteBatch);
+                _zombies[i].Draw(_spriteBatch);
             }
+            for (int i = 0; i < Lawn.GetInstance().Rows.Count; i++)
+            {
+                for (int j = 0; j < Lawn.GetInstance().Rows[i].Tiles.Count; j++)
+                {
+                    Tile tile = Lawn.GetInstance().Rows[i].Tiles[j];
+                    if (tile.Plant != null) tile.Plant.Draw(_spriteBatch);
+                }
+            }
+            foreach (Sun sun in _sunList)
+            {
+                sun.Draw(_spriteBatch);
+            }
+
+            _deck.Draw(_spriteBatch);
+            _spriteBatch.Draw(_sunCounterTexture, new Rectangle(150, 170, 200, 57), Color.White);
+
+            _spriteBatch.DrawString(font, _sun.ToString(), new Vector2(260, 185), Color.Black);
+            _spriteBatch.DrawString(font, new String("Stage: ") + _stage.ToString(), new Vector2(1250, 185), Color.White);
+            if (_message != null) _spriteBatch.DrawString(font, _message, new Vector2(600, 200), Color.White);
+        } else
+        {
+            _spriteBatch.DrawString(font, new string("Game Over!"), new Vector2(700, 450), Color.White);
         }
         
-        _deck.Draw(_spriteBatch);
-        _spriteBatch.Draw(_sunCounterTexture, new Rectangle(150,170,200,57), Color.White);
-        _spriteBatch.DrawString(font, _score.ToString(), new Vector2(260, 185), Color.Black);
+        
+
+
         base.Draw(gameTime);
         _spriteBatch.End();
         
     }
 }
+
+// fix ZombieFactory static
 

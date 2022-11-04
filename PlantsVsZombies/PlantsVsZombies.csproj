@@ -15,6 +15,7 @@
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
     <None Remove="Newtonsoft.Json" />
+    <None Remove="Content\sounds\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -28,6 +29,9 @@
     <ProjectReference Include="..\src\SpriteFontPlus.MonoGame.csproj" />
     <ProjectReference Include="..\src\XNA\FontStashSharp.MonoGame.csproj" />
     <ProjectReference Include="..\SpriteFontPlus\src\SpriteFontPlus.MonoGame.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\sounds\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

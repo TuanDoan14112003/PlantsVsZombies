@@ -8,15 +8,17 @@ namespace PlantsVsZombies
        
 
         public int Cost { get => _cost; set => _cost = value; }
-
+        protected GameTime _lastGameTime;
 
 
         public List<Projectile> Projectiles { get => _projectiles; }
         protected List<Projectile> _projectiles;
 
 
-        public Plant(String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector,int hp = 100) : base(name,description,texture,width,height,totalFrames,positionVector, hp)
+        public Plant(GameTime gameTime,String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector,int hp = 100) : base(name,description,texture,width,height,totalFrames,positionVector, hp)
         {
+            _lastGameTime = new GameTime();
+            _lastGameTime.TotalGameTime = gameTime.TotalGameTime;
             _projectileTextuture = projectileTexture;
 
         }

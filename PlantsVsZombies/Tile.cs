@@ -15,8 +15,6 @@ namespace PlantsVsZombies
         {
             if (_plant != null && _plant.IsRemoved)
             {
-                Console.WriteLine("chuyen 0");
-
                 _plant = null;
             }
             

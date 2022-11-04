@@ -13,7 +13,10 @@ namespace PlantsVsZombies
 
         public void Update(GameTime gameTime, Zombie zombie)
         {
-            //zombie.PositionVector = new Vector2(zombie.PositionVector.X - (float)0.5, zombie.PositionVector.Y);
+
+            if (zombie._soundInstance.State != SoundState.Playing)
+                zombie._soundInstance.Play();
+            
         }
     }
 }

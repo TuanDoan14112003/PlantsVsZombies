@@ -1,39 +1,27 @@
 ﻿<Properties StartupConfiguration="{AC6C3FA9-DA92-4283-9181-1DA60E1CC245}|Default">
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.PlantsVsZombies PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <DisabledProjects>
+    <String>FontStashSharp/FontStashSharp.csproj</String>
+    <String>XNA/FontStashSharp.FNA.Core.csproj</String>
+    <String>XNA/FontStashSharp.FNA.csproj</String>
+    <String>src/XNA/FontStashSharp.MonoGame.csproj</String>
+  </DisabledProjects>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.PlantsVsZombies PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="PlantsVsZombies/Tile.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PlantsVsZombies/PvZ.cs">
     <Files>
-      <File FileName="PlantsVsZombies/GameObject.cs" Line="75" Column="1" IsPinned="True" />
-      <File FileName="PlantsVsZombies/Program.cs" Line="5" Column="1" />
-      <File FileName="PlantsVsZombies/Lawn.cs" Line="11" Column="1" />
-      <File FileName="PlantsVsZombies/PvZ.cs" Line="154" Column="4" />
-      <File FileName="PlantsVsZombies/Row.cs" Line="19" Column="10" />
-      <File FileName="PlantsVsZombies/Tile.cs" Line="23" Column="10" />
-      <File FileName="PlantsVsZombies/Plant.cs" Line="20" Column="21" />
-      <File FileName="PlantsVsZombies/app.manifest" Line="1" Column="1" />
-      <File FileName="PlantsVsZombies/Projectile.cs" Line="26" Column="1" />
-      <File FileName="PlantsVsZombies/Zombie.cs" Line="45" Column="91" />
-      <File FileName="PlantsVsZombies/Shooter.cs" Line="32" Column="7" />
-      <File FileName="PlantsVsZombies/Peashooter.cs" Line="6" Column="16" />
-      <File FileName="PlantsVsZombies/PlantFactory.cs" Line="17" Column="107" />
-      <File FileName="PlantsVsZombies/ZombieState.cs" Line="6" Column="9" />
-      <File FileName="PlantsVsZombies/ZombieEatingState.cs" Line="16" Column="2" />
-      <File FileName="PlantsVsZombies/ZombieMovingState.cs" Line="5" Column="6" />
-      <File FileName="PlantsVsZombies/Sunflower.cs" Line="24" Column="38" />
-      <File FileName="PlantsVsZombies/Sun.cs" Line="15" Column="1" />
-      <File FileName="SpriteFontPlus/src/TtfFontBakerResult.cs" Line="89" Column="1" />
-      <File FileName="PlantsVsZombies/ZombieFactory.cs" Line="48" Column="73" />
+      <File FileName="PlantsVsZombies/PvZ.cs" Line="226" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PlantsVsZombies" expanded="True">
             <Node name="PlantsVsZombies" expanded="True">
-              <Node name="Tile.cs" selected="True" />
+              <Node name="Wallnut.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -43,11 +31,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <DisabledProjects>
-    <String>FontStashSharp/FontStashSharp.csproj</String>
-    <String>XNA/FontStashSharp.FNA.Core.csproj</String>
-    <String>XNA/FontStashSharp.FNA.csproj</String>
-    <String>src/XNA/FontStashSharp.MonoGame.csproj</String>
-  </DisabledProjects>
 </Properties>
