@@ -27,18 +27,15 @@ namespace PlantsVsZombies
         public static Texture2D WallnutTexture { get => _wallnutTexture; set => _wallnutTexture = value; }
         public static int WallnutTotalFrames { get => _wallnutTotalFrames; set => _wallnutTotalFrames = value; }
 
-        public PlantFactory()
-        {
-        }
 
-        public static Plant CreatePlant(GameTime gametime,String plantType, Vector2 positionVector )
+        public Plant CreatePlant(int row, int column, GameTime gametime,String plantType, Vector2 positionVector )
         {
             if (plantType == "peashooter")
-                return new Peashooter(gametime,_peashooterTexture, _plantWidth, _plantHeight, _peashooterProjectileTexture, PeashooterTextureTotalFrames, positionVector); // fix total frames
+                return new Peashooter(row,column,gametime,_peashooterTexture, _plantWidth, _plantHeight, _peashooterProjectileTexture, PeashooterTextureTotalFrames, positionVector); // fix total frames
             else if (plantType == "sunflower")
-                return new Sunflower(gametime,_sunflowerTexture, _plantWidth, _plantHeight, _sunTexture, SunflowerTextureTotalFrames, positionVector);
+                return new Sunflower(row, column,gametime, _sunflowerTexture, _plantWidth, _plantHeight, _sunTexture, SunflowerTextureTotalFrames, positionVector);
             else if (plantType == "wallnut")
-                return new Wallnut(gametime,_wallnutTexture, _plantWidth, _plantHeight, _wallnutTotalFrames, positionVector);
+                return new Wallnut(row, column,gametime, _wallnutTexture, _plantWidth, _plantHeight, _wallnutTotalFrames, positionVector);
 
             else return null;
         }

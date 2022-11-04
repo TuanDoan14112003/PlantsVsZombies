@@ -23,8 +23,8 @@
 /Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/obj/Debug/net6.0/PlantsVsZombies.pdb
 /Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/obj/Debug/net6.0/PlantsVsZombies.genruntimeconfig.cache
 /Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/obj/Debug/net6.0/ref/PlantsVsZombies.dll
+/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/SpriteFontPlus.dll
+/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/SpriteFontPlus.pdb
 /Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/Cyotek.Drawing.BitmapFont.dll
 /Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/StbImageSharp.dll
 /Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/StbTrueTypeSharp.dll
-/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/SpriteFontPlus.dll
-/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/bin/Debug/net6.0/SpriteFontPlus.pdb

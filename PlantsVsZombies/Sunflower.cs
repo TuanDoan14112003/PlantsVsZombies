@@ -7,7 +7,7 @@ namespace PlantsVsZombies
     {
 
  
-        public Sunflower(GameTime gametime,Texture2D texture, int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector) : base(gametime,new String("Sunflower"), new String("Sunflower"), texture, width, height, projectileTexture, totalFrames, positionVector)
+        public Sunflower(int row, int column, GameTime gametime,Texture2D texture, int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector) : base(row,column,gametime,new String("Sunflower"), new String("Sunflower"), texture, width, height, projectileTexture, totalFrames, positionVector)
         {
             Cost = 50;
            

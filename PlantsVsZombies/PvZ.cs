@@ -8,43 +8,34 @@ namespace PlantsVsZombies;
 
 public class PvZ : Game
 {
+    private static PvZ _PvZInstance;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private String _contentPath;
-
     private MouseState lastMouseState = new MouseState();
 
-    private string _currentPlant;
     private Lawn _lawn;
-
-    //might be able to delete all this and use local variables
-    private Texture2D _wallnutTexture;
-    private Texture2D _wallnutIconTexture;
-    private Texture2D _peashooterTexture;
-    
-    private Texture2D _peaTexture;
-    private Texture2D _peaIconTexture;
-    private Texture2D _sunflowerTexture;
-    private Texture2D _sunflowerIconTexture;
-    private Texture2D _sunTexture;
-    private Texture2D _zombieTexture;
-    private Texture2D _zombieEatingTexture;
-    private List<Zombie> _zombies;
-    private List<Plant> _plants;
     private PlantFactory _plantFactory;
-    private ZombieFactory _zombieFactory;
-    private int _stage;
-    Texture2D _sunCounterTexture;
+    private string _currentPlant;
+    private List<Plant> _plants;
+
+    private List<Zombie> _zombies;
+    private ZombieGeneratorStrategy _zombieGenerator;
+    
     private Deck _deck;
-    private int _sun;
-    private List<Sun> _sunList;
+    private int _stage;
     private SpriteFont font;
     private String _message;
     private bool _gameOver;
+
     private SoundEffect _eatingSound;
     private SoundEffectInstance _ingameSong;
 
-    private static PvZ _PvZInstance;
+    private int _sun;
+    private List<Sun> _sunList;
+    private Texture2D _sunCounterTexture;
+    private Texture2D _sunTexture;
+    
 
     private PvZ()
     {
@@ -57,7 +48,7 @@ public class PvZ : Game
         IsMouseVisible = true;
         _contentPath = "/Users/tuandoan/CODE/OOP/PlantsVsZombies/PlantsVsZombies/Content/";
 
-        GameObject.SetGraphic(_graphics); // remove this
+
     }
 
     public static PvZ GetInstance()
@@ -75,15 +66,17 @@ public class PvZ : Game
     {
         // TODO: Add your initialization logic here
         _plantFactory = new PlantFactory();
-        
         _zombies = new List<Zombie>();
         _currentPlant = null;
         _plants = new List<Plant>();
         _sun = 0;
         _sunList = new List<Sun>();
         _message = null;
-        _stage = 0;
         _gameOver = false;
+        _zombieGenerator = new ZombieGeneratorS1();
+        _stage = 1;
+
+
         base.Initialize();
 
     }
@@ -91,20 +84,9 @@ public class PvZ : Game
     protected override void LoadContent()
     {
 
-        var fontBakeResult = TtfFontBaker.Bake(File.ReadAllBytes(_contentPath + "font.ttf"),
-                                                25,
-                                                1024,
-                                                1024,
-                                                new[]
-                                                {
-                                                    CharacterRange.BasicLatin,
-                                                    CharacterRange.Latin1Supplement,
-                                                    CharacterRange.LatinExtendedA,
-                                                    CharacterRange.Cyrillic
-                                                }
-                                               );
+        TtfFontBakerResult fontBaker = TtfFontBaker.Bake(File.ReadAllBytes(_contentPath + "font.ttf"),25,1024,1024,new[]{CharacterRange.BasicLatin});
 
-        font = fontBakeResult.CreateSpriteFont(GraphicsDevice);
+        font = fontBaker.CreateSpriteFont(GraphicsDevice);
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         FileStream lawnFileStream = new FileStream(_contentPath + "lawn.png", FileMode.Open);
@@ -112,54 +94,43 @@ public class PvZ : Game
         _lawn = Lawn.GetInstance(lawnTexture);
 
 
-        FileStream peashooterFileStream = new FileStream(_contentPath + "plant.png", FileMode.Open);
-        _peashooterTexture = Texture2D.FromStream(GraphicsDevice, peashooterFileStream);
-        //_plantTextureWidth = 100;
-        //_plantTextureHeight = 100;
-
-        FileStream sunflowerFileStream = new FileStream(_contentPath + "sunflower.png", FileMode.Open);
-        _sunflowerTexture = Texture2D.FromStream(GraphicsDevice, sunflowerFileStream);
-
-
-        FileStream peaFileStream = new FileStream(_contentPath + "pea.png", FileMode.Open);
-        _peaTexture = Texture2D.FromStream(GraphicsDevice, peaFileStream);
+        FileStream peashooterFileStream = new FileStream(_contentPath + "peashooter.png", FileMode.Open);
+        Texture2D _peashooterTexture = Texture2D.FromStream(GraphicsDevice, peashooterFileStream);
         FileStream peashooterIconFileStream = new FileStream(_contentPath + "peashooter_icon.png", FileMode.Open);
-        _peaIconTexture = Texture2D.FromStream(GraphicsDevice, peashooterIconFileStream);
-
-        FileStream zombieFileStream = new FileStream(_contentPath + "zombie.png", FileMode.Open);
-        _zombieTexture = Texture2D.FromStream(GraphicsDevice, zombieFileStream);
-
-        FileStream zombieEatingFileStream = new FileStream(_contentPath + "zombie_eating.png", FileMode.Open);
-        _zombieEatingTexture = Texture2D.FromStream(GraphicsDevice, zombieEatingFileStream);
-
-        FileStream sunFileStream = new FileStream(_contentPath + "sun.png", FileMode.Open);
-        _sunTexture = Texture2D.FromStream(GraphicsDevice, sunFileStream);
-
-        FileStream wallnutFileStream = new FileStream(_contentPath + "wallnut.png", FileMode.Open);
-        _wallnutTexture = Texture2D.FromStream(GraphicsDevice, wallnutFileStream);
-
-        FileStream wallnutIconFileStream = new FileStream(_contentPath + "wallnut_icon.png", FileMode.Open);
-        _wallnutIconTexture = Texture2D.FromStream(GraphicsDevice, wallnutIconFileStream);
-
-
-        FileStream sunflowerIconFileStream = new FileStream(_contentPath + "sunflower_icon.png", FileMode.Open);
-        _sunflowerIconTexture = Texture2D.FromStream(GraphicsDevice, sunflowerIconFileStream);
+        Texture2D _peaIconTexture = Texture2D.FromStream(GraphicsDevice, peashooterIconFileStream);
+        FileStream peaFileStream = new FileStream(_contentPath + "pea.png", FileMode.Open);
+        Texture2D _peaTexture = Texture2D.FromStream(GraphicsDevice, peaFileStream);
 
         FileStream sunCounterFileStream = new FileStream(_contentPath + "suncounter.png", FileMode.Open);
         _sunCounterTexture = Texture2D.FromStream(GraphicsDevice, sunCounterFileStream);
+        FileStream sunflowerFileStream = new FileStream(_contentPath + "sunflower.png", FileMode.Open);
+        Texture2D _sunflowerTexture = Texture2D.FromStream(GraphicsDevice, sunflowerFileStream);
+        FileStream sunflowerIconFileStream = new FileStream(_contentPath + "sunflower_icon.png", FileMode.Open);
+        Texture2D _sunflowerIconTexture = Texture2D.FromStream(GraphicsDevice, sunflowerIconFileStream);
+        FileStream sunFileStream = new FileStream(_contentPath + "sun.png", FileMode.Open);
+        _sunTexture = Texture2D.FromStream(GraphicsDevice, sunFileStream);
+
+
+        FileStream wallnutFileStream = new FileStream(_contentPath + "wallnut.png", FileMode.Open);
+        Texture2D _wallnutTexture = Texture2D.FromStream(GraphicsDevice, wallnutFileStream);
+        FileStream wallnutIconFileStream = new FileStream(_contentPath + "wallnut_icon.png", FileMode.Open);
+        Texture2D _wallnutIconTexture = Texture2D.FromStream(GraphicsDevice, wallnutIconFileStream);
+
+
+        FileStream zombieWalkingFileStream = new FileStream(_contentPath + "zombie.png", FileMode.Open);
+        Texture2D _zombieWalkingTexture = Texture2D.FromStream(GraphicsDevice, zombieWalkingFileStream);
+        FileStream zombieEatingFileStream = new FileStream(_contentPath + "zombie_eating.png", FileMode.Open);
+        Texture2D _zombieEatingTexture = Texture2D.FromStream(GraphicsDevice, zombieEatingFileStream);
+        ZombieGeneratorStrategy.LoadContent(355, 200, _zombieWalkingTexture, _zombieEatingTexture, 24);
 
         FileStream _eatingSoundFileStream = new FileStream(_contentPath + "/sounds/chomp.wav", FileMode.Open);
         _eatingSound = SoundEffect.FromStream(_eatingSoundFileStream);
-        Zombie.EatingSoundEffect = _eatingSound;
+        Zombie.EatingSoundEffect = _eatingSound; // fix this
 
         FileStream _ingameSongFileStream = new FileStream(_contentPath + "/sounds/ingame.wav", FileMode.Open);
         SoundEffect song = SoundEffect.FromStream(_ingameSongFileStream);
         _ingameSong = song.CreateInstance();
 
-
-        _zombieFactory = new ZombieFactory(4, 15, 355, 200, _zombieTexture, _zombieEatingTexture, 24, (float)0.6);
-
- 
         PlantFactory.PeashooterTexture = _peashooterTexture;
         PlantFactory.PeashooterTextureTotalFrames = 49;
         PlantFactory.PeashooterProjectileTexture = _peaTexture;
@@ -171,16 +142,12 @@ public class PvZ : Game
         PlantFactory.PlantWidth = 100;
         PlantFactory.PlantHeight = 100;
 
-        Dictionary<string,Texture2D> plantList =  new Dictionary<string, Texture2D>();
-        plantList.Add( "peashooter", _peaIconTexture);
-        plantList.Add("sunflower", _sunflowerIconTexture);
-        plantList.Add("wallnut", _wallnutIconTexture);
-        _deck = new Deck(plantList);
+        _deck = new Deck(new Dictionary<string, Texture2D>() { { "peashooter", _peaIconTexture }, { "sunflower", _sunflowerIconTexture }, { "wallnut", _wallnutIconTexture } });
     
 
     }
 
-    private Tuple<int, int> GetRowAndTile(int x, int y)
+    private Tuple<int, int> CalculateRowAndTile(int x, int y) // Get the row and tile number based on the current mouse position
     {
         int row;
         int tile;
@@ -206,7 +173,7 @@ public class PvZ : Game
     protected override void Update(GameTime gameTime)
     {
 
-        // Get the mouse state relevant for this frame
+      
         if (_ingameSong.State != SoundState.Playing)
         {
             _ingameSong.Play();
@@ -214,9 +181,20 @@ public class PvZ : Game
         MouseState currentMouseState = Mouse.GetState();
         if (_zombies.Count == 0)
         {
-            if (gameTime.TotalGameTime.TotalSeconds >= 35) _stage = 1;
-            if (gameTime.TotalGameTime.TotalSeconds >= 90) _stage = 2;
-            _zombies = ZombieFactory.GenerateZombies(_stage);
+            
+            if (gameTime.TotalGameTime.TotalSeconds >= 35)
+            {
+                _zombieGenerator = new ZombieGeneratorS2();
+                _stage = 2;
+            }
+
+            if (gameTime.TotalGameTime.TotalSeconds >= 90)
+            {
+                _zombieGenerator = new ZombieGeneratorS3();
+                _stage = 3;
+            }
+            _zombies = _zombieGenerator.GenerateZombies();
+
         }
  
 
@@ -227,8 +205,6 @@ public class PvZ : Game
             {
                 int x = rnd.Next(200,700);
                 int y = rnd.Next(300, 700);
-                
-
                 Sun newSun = new Sun(_sunTexture, 50, 50, new Vector2(x,y));
                 _sunList.Add(newSun);
             }
@@ -241,18 +217,15 @@ public class PvZ : Game
         {
             int MouseX = Mouse.GetState().X;
             int MouseY = Mouse.GetState().Y;
-            Console.WriteLine(MouseX);
-            Console.WriteLine(MouseY);
 
             String newPlant = _deck.getSelectedPlant(MouseX, MouseY);
             if (newPlant != null) _currentPlant = newPlant;
             bool clickOnSun = false;
 
-
             for (int sunIndex = _sunList.Count - 1; sunIndex >= 0; sunIndex--)
             {
                 Sun sun = _sunList[sunIndex];
-                if (sun.Rectangle.Left < MouseX && sun.Rectangle.Right > MouseX && sun.Rectangle.Top < MouseY && sun.Rectangle.Bottom > MouseY)
+                if (sun.GetClickedOn(MouseX,MouseY))
                 {
                     _sunList.RemoveAt(sunIndex);
                     clickOnSun = true;
@@ -260,21 +233,22 @@ public class PvZ : Game
                     break;
                 }
             }
+
             if (!clickOnSun)
             {
-                Tuple<int, int> location = GetRowAndTile(MouseX, MouseY);
+                Tuple<int, int> location = CalculateRowAndTile(MouseX, MouseY);
 
                 if (location.Item1 != -1 && location.Item2 != -1)
                 {
 
-                    if (Lawn.GetInstance().Rows[location.Item1].Tiles[location.Item2].Plant == null)
+                    if (Lawn.GetInstance().GetPlant(location.Item1,location.Item2) == null)
                     {
-                        Plant plant = PlantFactory.CreatePlant(gameTime, _currentPlant, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
+                        Plant plant = _plantFactory.CreatePlant(location.Item1,location.Item2,gameTime, _currentPlant, new Vector2(254 + 81 * location.Item2, 236 + 93 * location.Item1));
                         if (plant != null)
                         {
                             if (_sun >= plant.Cost)
                             {
-                                Lawn.GetInstance().GetRow(location.Item1).GetTile(location.Item2).Plant = plant;
+                                Lawn.GetInstance().SetPlant(location.Item1,location.Item2,plant);
                                 _plants.Add(plant);
                                 _sun -= plant.Cost;
                                 _message = null;
@@ -294,20 +268,14 @@ public class PvZ : Game
         }
   
         
-        for (int i = 0; i < Lawn.GetInstance().Rows.Count; i++)
+        foreach (Plant plant in _plants)
         {
+            plant.Update(gameTime);
 
-            for (int j = 0; j < Lawn.GetInstance().Rows[i].Tiles.Count; j++)
-            {
-
-                Tile tile = Lawn.GetInstance().Rows[i].Tiles[j];
-                tile.Update();
-                Plant plant = tile.Plant;
-                if (plant!=null) {
-                    tile.Plant.Update(gameTime); 
-                    if (plant.Projectiles != null)
+                    if (plant is Shooter)
                     {
-                        foreach (Projectile proj in plant.Projectiles)
+                        Shooter shooter = (Shooter)plant;
+                        foreach (Projectile proj in shooter.Projectiles)
                         {
                                 foreach (Zombie zombie in _zombies) {
                                     if (zombie.isCollided(proj))
@@ -326,8 +294,8 @@ public class PvZ : Game
                         if (zombie.isCollided(plant))
                         {
                             
-                            zombie.State = new ZombieEatingState(_zombieEatingTexture);
-                            zombie.EatingLocation = new Tuple<int, int>(i, j);
+                            zombie.State = new ZombieEatingState();
+                            zombie.EatingLocation = new Tuple<int, int>(plant.Row, plant.Column);
                             plant.gotHit(zombie.Damage);
                         }
  
@@ -341,8 +309,7 @@ public class PvZ : Game
                     }
                 }
 
-            }
-        }
+     
 
 
         for (int index = _zombies.Count - 1; index >= 0; index--)
@@ -355,10 +322,10 @@ public class PvZ : Game
                 int rowNumber = _zombies[index].EatingLocation.Item1;
                 int tileNumber = _zombies[index].EatingLocation.Item2;
         
-                if (Lawn.GetInstance().Rows[rowNumber].Tiles[tileNumber].Plant == null)
+                if (Lawn.GetInstance().GetPlant(rowNumber,tileNumber) == null)
                 {
              
-                    _zombies[index].State = new ZombieMovingState(_zombieTexture);
+                    _zombies[index].State = new ZombieMovingState();
                 }
             }
             _zombies[index].Update(gameTime);
@@ -393,13 +360,18 @@ public class PvZ : Game
             {
                 _zombies[i].Draw(_spriteBatch);
             }
-            for (int i = 0; i < Lawn.GetInstance().Rows.Count; i++)
+            //for (int i = 0; i < Lawn.GetInstance().Rows.Count; i++)
+            //{
+            //    for (int j = 0; j < Lawn.GetInstance().Rows[i].Tiles.Count; j++)
+            //    {
+            //        Tile tile = Lawn.GetInstance().Rows[i].Tiles[j];
+            //        if (tile.Plant != null) tile.Plant.Draw(_spriteBatch);
+            //    }
+            //}
+
+            foreach (Plant plant in _plants)
             {
-                for (int j = 0; j < Lawn.GetInstance().Rows[i].Tiles.Count; j++)
-                {
-                    Tile tile = Lawn.GetInstance().Rows[i].Tiles[j];
-                    if (tile.Plant != null) tile.Plant.Draw(_spriteBatch);
-                }
+                plant.Draw(_spriteBatch);
             }
             foreach (Sun sun in _sunList)
             {

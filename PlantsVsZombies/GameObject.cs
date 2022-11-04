@@ -5,7 +5,7 @@ namespace PlantsVsZombies
 {
     public abstract class GameObject
     {
-        static public GraphicsDeviceManager _graphics; // remove this
+
 
         private float _hp;
         private String _name;
@@ -55,10 +55,7 @@ namespace PlantsVsZombies
         }
 
 
-        public static void SetGraphic (GraphicsDeviceManager graphics) // remove this
-        {
-            _graphics = graphics;
-        }
+
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
