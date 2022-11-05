@@ -10,7 +10,7 @@ namespace PlantsVsZombies
         public Texture2D Texture { get => _texture; set => _texture = value; }
 
         private List<List<Plant>> _tiles;
-        //public List<List<Plant>> Tiles { get => _tiles; }
+
         private int _numberOfRow;
         private int _numberOfColumn;
         public int NumberOfColumn { get => _numberOfColumn; }

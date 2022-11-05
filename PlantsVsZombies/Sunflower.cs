@@ -6,11 +6,10 @@ namespace PlantsVsZombies
     public class Sunflower : Plant
     {
 
- 
-        public Sunflower(int row, int column, GameTime gametime,Texture2D texture, int width, int height, Texture2D projectileTexture, int totalFrames, Vector2 positionVector) : base(row,column,gametime,new String("Sunflower"), new String("Sunflower"), texture, width, height, projectileTexture, totalFrames, positionVector)
+        private Texture2D _sunTexture;
+        public Sunflower(int row, int column, GameTime gametime,Texture2D texture, Texture2D sunTexture, int width, int height , int totalFrames, Vector2 positionVector) : base(row,column,gametime,new String("Sunflower"), texture, width, height, totalFrames, positionVector,50)
         {
-            Cost = 50;
-           
+            _sunTexture = sunTexture;
         }
 
 
@@ -19,7 +18,7 @@ namespace PlantsVsZombies
             if (gameTime.TotalGameTime.TotalSeconds - _lastGameTime.TotalGameTime.TotalSeconds >= 10)
             {
                 Vector2 sunPositionVector = new Vector2(this.Rectangle.Center.X + 20, this.Rectangle.Center.Y - 50);
-                Sun newSun = new Sun(_projectileTextuture, 50, 50, sunPositionVector);
+                Sun newSun = new Sun(_sunTexture, 50, 50, sunPositionVector);
                 _lastGameTime.TotalGameTime = gameTime.TotalGameTime;
                 return newSun;
 

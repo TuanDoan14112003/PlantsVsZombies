@@ -10,8 +10,8 @@ namespace PlantsVsZombies
         public void Update(GameTime gameTime, Zombie zombie)
         {
 
-            if (zombie._soundInstance.State != SoundState.Playing)
-                zombie._soundInstance.Play();
+            if (zombie.SoundInstance.State != SoundState.Playing)
+                zombie.SoundInstance.Play();
             
         }
     }

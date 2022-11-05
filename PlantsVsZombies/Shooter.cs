@@ -7,14 +7,18 @@ namespace PlantsVsZombies
     public class Shooter : Plant
     {
 
+        private Texture2D _projectileTextuture;
         private int _projectileDamage;
-
+        private List<Projectile> _projectiles;
         private int _projectileSize;
-        public Shooter(int row, int column, GameTime gametime, String name, String description, Texture2D texture,int width, int height, Texture2D projectileTexture,int projectileSize,int projectileDamage, int totalFrames, Vector2 positionVector) : base(row,column,gametime,name, description, texture,width,height, projectileTexture, totalFrames, positionVector)
+
+        public Texture2D ProjectileTexture { get => _projectileTextuture; }
+        public List<Projectile> Projectiles { get => _projectiles; }
+        public Shooter(int row, int column, GameTime gametime, String name, Texture2D texture,Texture2D projectileTexture,int width, int height,int projectileSize,int projectileDamage, int totalFrames, Vector2 positionVector,int cost,int hp = 100) : base(row,column,gametime,name, texture,width,height, totalFrames, positionVector,cost,hp)
         {
+            _projectileTextuture = projectileTexture;
             _projectiles = new List<Projectile>();
             _projectileSize = projectileSize;
-
             _projectileDamage = projectileDamage;
         }
 
@@ -24,10 +28,8 @@ namespace PlantsVsZombies
 
             if (gameTime.TotalGameTime.TotalSeconds - _lastGameTime.TotalGameTime.TotalSeconds >= 2)
             {
-
                 Shoot();
                 _lastGameTime.TotalGameTime = gameTime.TotalGameTime;
-
             };
 
             for (int i = _projectiles.Count - 1; i >= 0; i--)
@@ -43,7 +45,7 @@ namespace PlantsVsZombies
             Vector2 projectilePositionVector;
             projectilePositionVector.X = PositionVector.X + 50;
             projectilePositionVector.Y = PositionVector.Y + 30;
-            _projectiles.Add(new Projectile("projectile","bullet",_projectileTextuture,_projectileSize,_projectileSize, projectilePositionVector,_projectileDamage));
+            _projectiles.Add(new Projectile("projectile",_projectileTextuture,_projectileSize,_projectileSize, projectilePositionVector,_projectileDamage));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -10,21 +10,25 @@ namespace PlantsVsZombies
         private ZombieState _state;
         public override Texture2D Texture { get => _state.GetTexture(this); }
         private Texture2D _eatingTexture;
-        public  Texture2D EatingTexture { get => _eatingTexture; }
         private Texture2D _walkingTexture;
-        public Texture2D WalkingTexture { get => _walkingTexture; }
         private float _damage;
         private float _speed;
         private Tuple<int,int> _eatingLocation;
+        private static SoundEffect _eatingSoundEffect;
+        private SoundEffectInstance _soundInstance; 
+
+
+        public Texture2D EatingTexture { get => _eatingTexture; }
+        public Texture2D WalkingTexture { get => _walkingTexture; }
         public float Damage { get => _damage; }
         public float Speed { get => _speed; }
-        private static SoundEffect _eatingSoundEffect;
-        public SoundEffectInstance _soundInstance; // fix public
+
+        public SoundEffectInstance SoundInstance { get => _soundInstance; }
         public static SoundEffect EatingSoundEffect { get => _eatingSoundEffect; set => _eatingSoundEffect = value; }
         public Tuple<int,int> EatingLocation { get => _eatingLocation; set => _eatingLocation = value; }
         public ZombieState State { get => _state; set => _state = value; }
 
-        public Zombie(Texture2D zombieWalkingTexture, Texture2D zombieEatingTexture, int width, int height, int totalFrames, Vector2 positionVector, float damage, float speed, int hp = 100) : base(new string("zombie"), new string("zombie"), zombieWalkingTexture, width, height, totalFrames, positionVector, hp)
+        public Zombie(Texture2D zombieWalkingTexture, Texture2D zombieEatingTexture, int width, int height, int totalFrames, Vector2 positionVector, float damage, float speed, int hp = 100) : base(new string("zombie"), zombieWalkingTexture, width, height, totalFrames, positionVector, hp)
         {
             _speed = speed;
             _damage = damage;
